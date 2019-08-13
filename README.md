@@ -25,3 +25,14 @@
   * git clone xxx
 * 只有master，需要dev
   * git fetch origin dev:dev  
+  
+## 开发流程
+1. 配置antd  
+2. 配置react-router-dom
+  * 在App组件中使用BrowserRouter
+3. 配置详细路由
+  * /login
+  * / 
+    * /home
+    * /category
+    * ....
