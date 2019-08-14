@@ -75,7 +75,7 @@ class Login extends Component {
             // 编程式导航
             this.props.history.replace('/');
             // 下面方式不行
-            {/*<Redirect to="/login"/>;*/}
+            /*<Redirect to="/login"/>;*/
           })
           .catch((error) => {
             // 请求失败
