@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Form, Input, Icon, Button, message } from 'antd';
 import { reqLogin } from '../../api';
+import data from '../../utils/store';
+import { setItem } from '../../utils/storage';
 
 import logo from './logo.png';
 
 import './index.less';
 // 定义变量，不能写在import上面，会报eslint的错误
 const Item = Form.Item;
+
 
 class Login extends Component {
 
@@ -61,9 +64,18 @@ class Login extends Component {
         reqLogin(username, password)
           .then((response) => {
             // 请求成功
-            console.log(response);
+            // console.log(response);
             // 提示请求成功
             message.success('登录成功~', 3);
+            // 存储用户数据到内存中
+            data.user = response;
+            // 存储用户数据到本地中
+            setItem(response);
+            // 跳转到admin页面 -- 修改url地址为 /
+            // 编程式导航
+            this.props.history.replace('/');
+            // 下面方式不行
+            {/*<Redirect to="/login"/>;*/}
           })
           .catch((error) => {
             // 请求失败
