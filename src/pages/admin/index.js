@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { message, Spin, Layout, Menu, Icon } from 'antd';
+import { message, Spin, Layout } from 'antd';
 import { Link } from 'react-router-dom';
 
 import LeftNav from '../../components/left-nav';
@@ -12,10 +12,9 @@ import './index.less';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-
 export default class Admin extends Component {
   state = {
-    isLoading: true,
+    // isLoading: true,
     collapsed: false,
     isDisplay: 'block'
   };
@@ -41,7 +40,7 @@ export default class Admin extends Component {
           data.user = user;
           // 更新状态，显示admin页面
           this.setState({
-            isLoading: false
+            // isLoading: false
           })
         })
         .catch(() => {
