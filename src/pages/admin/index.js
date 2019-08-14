@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { message, Spin } from 'antd';
+import { message, Spin, Layout, Menu, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 
+import LeftNav from '../../components/left-nav';
 import { reqValidateUser } from '../../api';
 import data from '../../utils/store';
 import { getItem } from '../../utils/storage';
 
+import logo from '../../assets/images/logo.png';
 import './index.less';
+
+const { Header, Content, Footer, Sider } = Layout;
+
 
 export default class Admin extends Component {
   state = {
-    isLoading: true
+    isLoading: true,
+    collapsed: false,
+    isDisplay: 'block'
   };
 
   /**
@@ -52,14 +59,37 @@ export default class Admin extends Component {
     }
   };
 
+  // 展开菜单项
+  onCollapse = (collapsed) => {
+    this.setState({
+      collapsed,
+      isDisplay: collapsed ? 'none' : 'block'
+    })
+  };
+
   render() {
     // 登录验证
     const isLoading = this.checkUserLogin();
 
     if (isLoading) return <Spin className="admin-loading" tip="loading...." size="large"/>;
 
-    return <div>
-      admin
-    </div>;
+    const { isDisplay, collapsed } = this.state;
+
+    return <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+        <Link to="/home" className="admin-logo">
+          <img src={logo} alt="logo"/>
+          <h1 style={{display: isDisplay}}>硅谷后台</h1>
+        </Link>
+        <LeftNav />
+      </Sider>
+      <Layout>
+        <Header style={{ background: '#fff', padding: 0 }} />
+        <Content style={{ margin: '0 16px' }}>
+          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Bill is a cat.</div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      </Layout>
+    </Layout>;
   }
 }
