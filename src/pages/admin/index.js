@@ -97,7 +97,7 @@ export default class Admin extends Component {
           <HeaderMain />
         </Header>
         <Content style={{ margin: '65px 16px 0 16px' }}>
-          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+          <div style={{ background: '#fff', minHeight: 360 }}>
             <Switch>
               <Route path="/home" component={Home}/>
               <Route path="/category" component={Category}/>

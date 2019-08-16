@@ -30,3 +30,13 @@ export const reqWeather = (cityName) => {
     )
   })
 };
+
+// 定义获取分类列表的方法
+export const reqGetCategory = (parentId) => axiosInstance.get('/manage/category/list', {
+  params: {
+    parentId
+  }
+});
+
+// 定义添加分类的方法
+export const reqAddCategory = (parentId, categoryName) => axiosInstance.post('/manage/category/add', {parentId, categoryName});
