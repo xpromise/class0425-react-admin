@@ -45,13 +45,18 @@ class HeaderMain extends Component {
 
   // 初始化和更新都会走的生命周期函数
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { pathname } = nextProps.location;
+    let { pathname } = nextProps.location;
 
-    if (pathname === '/') {
+    /*if (pathname === '/') {
       return {
         title: '首页'
       }
+    }*/
+
+    if (pathname.startsWith('/product')) {
+      pathname = '/product'
     }
+
     // 生成title
     // menuList.find()  map()
     for (let i = 0; i < menuList.length; i++) {
@@ -75,6 +80,11 @@ class HeaderMain extends Component {
           }
         }
       }
+    }
+
+    // 默认返回值, 如果以上都不匹配，会被跳转到/home
+    return {
+      title: '首页'
     }
   }
 

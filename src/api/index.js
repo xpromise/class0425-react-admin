@@ -44,7 +44,13 @@ export const reqAddCategory = (parentId, categoryName) => axiosInstance.post('/m
 // 定义修改分类名称的方法
 export const reqUpdateCategoryName = (categoryId, categoryName) => axiosInstance.post('/manage/category/update', {categoryId, categoryName});
 
-
+// 定义获取产品的方法
+export const reqGetProduct = (pageNum, pageSize) => axiosInstance.get('/manage/product/list', {
+  params: {
+    pageNum,
+    pageSize
+  }
+});
 
 
 

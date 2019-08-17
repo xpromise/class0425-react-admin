@@ -8,7 +8,7 @@
 import axios from 'axios';
 
 // 怎么区分开发环境和生产环境
-console.log(process.env.NODE_ENV); // 是nodejs的一个模块process
+// console.log(process.env.NODE_ENV); // 是nodejs的一个模块process
 const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:5000';
 
 // 创建axios的实例
