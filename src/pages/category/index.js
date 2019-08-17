@@ -10,8 +10,10 @@ import './index.less';
 export default class Category extends Component {
   state = {
     categories: [],
+    subCategories: [],
     category: {},
     isShowAddCategory: false,
+    isShowSubCategory: false,
     isShowUpdateCategoryName: false
   };
 
@@ -50,11 +52,31 @@ export default class Category extends Component {
          */
         return <Fragment>
           <Button type="link" onClick={this.showUpdateCategoryName(category)}>修改名称</Button>
-          <Button type="link">查看其子品类</Button>
+          {
+            this.state.isShowSubCategory ? null : <Button type="link" onClick={this.showSubCategory(category)}>查看其子品类</Button>
+          }
         </Fragment>
       }
     }
   ];
+
+  showSubCategory = (category) => {
+    return () => {
+      // 发送请求请求二级分类数据
+      reqGetCategory(category._id)
+        .then((res) => {
+          message.success('获取二级分类成功', 3);
+          this.setState({
+            subCategories: res,
+            isShowSubCategory: true,
+            category
+          })
+        })
+        .catch((err) => {
+          message.error(err, 3);
+        })
+    }
+  };
 
   showAddCategory = () => {
     this.setState({
@@ -106,10 +128,26 @@ export default class Category extends Component {
             // res就是添加成功的分类数据
             // console.log(res);
             // 需要展示添加成功的分类数据
-            this.setState({
-              categories: [...this.state.categories, res]
-            });
+            const { isShowSubCategory } = this.state;
+            const isSubCategories = +parentId !== 0;
+            const key = isSubCategories ? 'subCategories' : 'categories';
+
             message.success('添加分类成功~', 3);
+            /*
+              如果在一级分类：
+                添加一级分类数据，更新 categories
+                添加二级分类数据，不更新
+              如果在二级分类
+                添加一级分类数据，更新 categories
+                添加二级分类数据，更新 subCategories
+             */
+            if (!isShowSubCategory && isSubCategories) {
+              // 是在一级分类中添加二级分类，不需要更新
+              return;
+            }
+            this.setState({
+              [key]: [...this.state[key], res]
+            });
           })
           .catch((error) => {
             // 请求失败，提示错误
@@ -139,9 +177,10 @@ export default class Category extends Component {
         reqUpdateCategoryName(categoryId,categoryName)
           .then((res) => {
             message.success('更新分类名称成功~', 3);
+            const key = this.state.isShowSubCategory ? 'subCategories' : 'categories';
             // 更新状态数据
             this.setState({
-              categories: this.state.categories.map((category) => {
+              [key]: this.state[key].map((category) => {
                 if (category._id === categoryId) {
                   category.name = categoryName;
                 }
@@ -162,8 +201,14 @@ export default class Category extends Component {
     })
   };
 
+  goBack = () => {
+    this.setState({
+      isShowSubCategory: false
+    })
+  };
+
   render() {
-    const { categories, category, isShowAddCategory, isShowUpdateCategoryName } = this.state;
+    const { categories, subCategories, category, isShowAddCategory, isShowSubCategory, isShowUpdateCategoryName } = this.state;
 
     // 每一行的具体数据
     /*const data = [
@@ -185,10 +230,12 @@ export default class Category extends Component {
       },
     ];*/
 
-    return <Card title="一级分类列表" extra={<Button type="primary" onClick={this.showAddCategory}><Icon type="plus"/>添加品类</Button>}>
+    return <Card title={
+      isShowSubCategory ? <Fragment><Button type="link" className="category-btn" onClick={this.goBack}>一级分类</Button><Icon type="arrow-right"/><span className="category-text">{category.name}</span></Fragment> : "一级分类列表"
+    } extra={<Button type="primary" onClick={this.showAddCategory}><Icon type="plus"/>添加品类</Button>}>
       <Table
         columns={this.columns}
-        dataSource={categories}
+        dataSource={isShowSubCategory ? subCategories : categories}
         bordered
         pagination={{
           showQuickJumper: true, // 显示快速跳转
