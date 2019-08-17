@@ -40,3 +40,20 @@ export const reqGetCategory = (parentId) => axiosInstance.get('/manage/category/
 
 // 定义添加分类的方法
 export const reqAddCategory = (parentId, categoryName) => axiosInstance.post('/manage/category/add', {parentId, categoryName});
+
+// 定义修改分类名称的方法
+export const reqUpdateCategoryName = (categoryId, categoryName) => axiosInstance.post('/manage/category/update', {categoryId, categoryName});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
