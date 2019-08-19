@@ -41,11 +41,18 @@ export default class Index extends Component {
       render: (product) => {
         return <Fragment>
           <Button type="link">详情</Button>
-          <Button type="link">修改</Button>
+          <Button type="link" onClick={this.goUpdateProduct(product)}>修改</Button>
         </Fragment>
       }
     }
   ];
+
+  goUpdateProduct = (product) => {
+    return () => {
+      // product可以再location.state中获取
+      this.props.history.push('/product/saveupdate', product);
+    }
+  };
 
   componentDidMount() {
     this.getProduct(1, 3);

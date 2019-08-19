@@ -10,7 +10,8 @@ const { Item } = Form;
 
 class SaveUpdate extends Component {
   state = {
-    options: []
+    options: [],
+    id: []
   };
 
   submit = (e) => {
@@ -57,21 +58,54 @@ class SaveUpdate extends Component {
   };
 
   componentDidMount() {
-    reqGetCategory(0)
-      .then((res) => {
+    const promiseArr = [];
+
+    promiseArr.push(reqGetCategory(0));
+
+    const { state } = this.props.location;
+
+    if (state) {
+      if (+state.pCategoryId === 0) {
         this.setState({
-          options: res.map((category) => {
-            return {
+          id: [state.categoryId]
+        })
+      } else {
+        // 请求二级分类数据
+        promiseArr.push(reqGetCategory(state.pCategoryId));
+      }
+    }
+
+    Promise.all(promiseArr)
+      .then((res) => {
+        const [categories, subCategories] = res;
+
+        this.setState({
+          options: categories.map((category) => {
+            const option = {
               label: category.name,
               value: category._id,
               isLeaf: false // 设置加载二级菜单
+            };
+            // 判断是否有二级分类
+            if (subCategories && (category._id === state.pCategoryId)) {
+              option.children = subCategories.map((subCategory) => {
+                return {
+                  label: subCategory.name,
+                  value: subCategory._id,
+                }
+              })
             }
-          })
+
+            return option;
+          }),
+          id: subCategories ? [state.pCategoryId, state.categoryId] : this.state.id
         })
       })
       .catch((error) => {
-        message.error(error, 3)
+        console.log(error);
+        message.error('获取分类数据失败~', 3)
       })
+
   }
 
   loadData = (selectedOptions) => {
@@ -111,10 +145,12 @@ class SaveUpdate extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { options } = this.state;
+    const { form: { getFieldDecorator}, location: { state } } = this.props;
+    const { options, id } = this.state;
 
-    return <Card title={<Fragment><Icon onClick={this.goBack} type="arrow-left"/>&nbsp;&nbsp;添加商品</Fragment>}>
+    const isUpdateProduct = !!state;
+
+    return <Card title={<Fragment><Icon onClick={this.goBack} type="arrow-left"/>&nbsp;&nbsp;{ isUpdateProduct ? '修改' : '添加' }商品</Fragment>}>
       <Form labelCol={{span: 2}} wrapperCol={{span: 8}} onSubmit={this.submit}>
         <Item label="商品名称">
           {
@@ -123,7 +159,8 @@ class SaveUpdate extends Component {
               {
                 rules: [
                   {required: true, message: '输入内容不能为空'}
-                ]
+                ],
+                initialValue: isUpdateProduct ? state.name : ''
               }
             )(
               <Input placeholder="请输入商品名称"/>
@@ -137,7 +174,8 @@ class SaveUpdate extends Component {
               {
                 rules: [
                   {required: true, message: '输入内容不能为空'}
-                ]
+                ],
+                initialValue: isUpdateProduct ? state.desc : ''
               }
             )(
               <Input placeholder="请输入商品描述"/>
@@ -151,7 +189,8 @@ class SaveUpdate extends Component {
               {
                 rules: [
                   {required: true, message: '输入内容不能为空'}
-                ]
+                ],
+                initialValue: id
               }
             )(
               <Cascader
@@ -169,7 +208,8 @@ class SaveUpdate extends Component {
               {
                 rules: [
                   {required: true, message: '输入内容不能为空'}
-                ]
+                ],
+                initialValue: isUpdateProduct ? state.price : ''
               }
             )(
               <InputNumber
@@ -188,10 +228,10 @@ class SaveUpdate extends Component {
               {
                 rules: [
                   {required: true, message: '请输入商品详情'}
-                ]
+                ],
               }
             )(
-              <RichTextEditor editorChange={this.editorChange}/>
+              <RichTextEditor editorChange={this.editorChange} detail={isUpdateProduct ? state.detail : ''}/>
             )
           }
         </Item>

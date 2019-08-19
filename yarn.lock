@@ -1576,10 +1576,10 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^3.21.4:
-  version "3.21.4"
-  resolved "https://registry.npm.taobao.org/antd/download/antd-3.21.4.tgz#6e5e8c6edde25ddce0aa1c666f0d6ef8d04e821e"
-  integrity sha1-bl6Mbt3iXdzgqhxmbw1u+NBOgh4=
+antd@^3.22.0:
+  version "3.22.0"
+  resolved "https://registry.npm.taobao.org/antd/download/antd-3.22.0.tgz#07828fddd40db3516e92868b5e4689215c67a197"
+  integrity sha1-B4KP3dQNs1FukoaLXkaJIVxnoZc=
   dependencies:
     "@ant-design/create-react-context" "^0.2.4"
     "@ant-design/icons" "~2.1.1"
@@ -1608,7 +1608,7 @@ antd@^3.21.4:
     rc-editor-mention "^1.1.13"
     rc-form "^2.4.5"
     rc-input-number "~4.4.5"
-    rc-mentions "~0.3.1"
+    rc-mentions "~0.4.0"
     rc-menu "~7.4.23"
     rc-notification "~3.3.1"
     rc-pagination "~1.20.5"
@@ -1616,7 +1616,7 @@ antd@^3.21.4:
     rc-rate "~2.5.0"
     rc-select "~9.2.0"
     rc-slider "~8.6.11"
-    rc-steps "~3.4.1"
+    rc-steps "~3.5.0"
     rc-switch "~1.9.0"
     rc-table "~6.7.0"
     rc-tabs "~9.6.4"
@@ -1626,10 +1626,10 @@ antd@^3.21.4:
     rc-tree-select "~2.9.1"
     rc-trigger "^2.6.2"
     rc-upload "~2.7.0"
-    rc-util "^4.6.0"
+    rc-util "^4.10.0"
     react-lazy-load "^3.0.13"
     react-lifecycles-compat "^3.0.4"
-    react-slick "~0.24.0"
+    react-slick "~0.25.2"
     resize-observer-polyfill "^1.5.1"
     shallowequal "^1.1.0"
     warning "~4.0.3"
@@ -8542,13 +8542,12 @@ rc-input-number@~4.4.5:
     rc-util "^4.5.1"
     rmc-feedback "^2.0.0"
 
-rc-mentions@~0.3.1:
-  version "0.3.1"
-  resolved "https://registry.npm.taobao.org/rc-mentions/download/rc-mentions-0.3.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-mentions%2Fdownload%2Frc-mentions-0.3.1.tgz#7c54f8fbd2e203c56ff4e0a0191ce4a2c9a88c86"
-  integrity sha1-fFT4+9LiA8Vv9OCgGRzkosmojIY=
+rc-mentions@~0.4.0:
+  version "0.4.0"
+  resolved "https://registry.npm.taobao.org/rc-mentions/download/rc-mentions-0.4.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-mentions%2Fdownload%2Frc-mentions-0.4.0.tgz#483552c088290dbcddd059a0846e9f207ecc3539"
+  integrity sha1-SDVSwIgpDbzd0FmghG6fIH7MNTk=
   dependencies:
     "@ant-design/create-react-context" "^0.2.4"
-    babel-runtime "^6.23.0"
     classnames "^2.2.6"
     rc-menu "^7.4.22"
     rc-trigger "^2.6.2"
@@ -8642,10 +8641,10 @@ rc-slider@~8.6.11:
     shallowequal "^1.0.1"
     warning "^4.0.3"
 
-rc-steps@~3.4.1:
-  version "3.4.1"
-  resolved "https://registry.npm.taobao.org/rc-steps/download/rc-steps-3.4.1.tgz#7f7d127dd60f9fa92ece27c06035c9319c5cab8e"
-  integrity sha1-f30SfdYPn6kuzifAYDXJMZxcq44=
+rc-steps@~3.5.0:
+  version "3.5.0"
+  resolved "https://registry.npm.taobao.org/rc-steps/download/rc-steps-3.5.0.tgz#36b2a7f1f49907b0d90363884b18623caf9fb600"
+  integrity sha1-NrKn8fSZB7DZA2OISxhiPK+ftgA=
   dependencies:
     babel-runtime "^6.23.0"
     classnames "^2.2.3"
@@ -8796,6 +8795,18 @@ rc-util@^4.0.4, rc-util@^4.1.0, rc-util@^4.1.1, rc-util@^4.3.0, rc-util@^4.4.0, 
   version "4.9.0"
   resolved "https://registry.npm.taobao.org/rc-util/download/rc-util-4.9.0.tgz#b1894bf9ba904aebc82a82531cab1f34266a69a1"
   integrity sha1-sYlL+bqQSuvIKoJTHKsfNCZqaaE=
+  dependencies:
+    add-dom-event-listener "^1.1.0"
+    babel-runtime "6.x"
+    prop-types "^15.5.10"
+    react-lifecycles-compat "^3.0.4"
+    shallowequal "^0.2.2"
+    warning "^4.0.3"
+
+rc-util@^4.10.0:
+  version "4.10.0"
+  resolved "https://registry.npm.taobao.org/rc-util/download/rc-util-4.10.0.tgz?cache=0&sync_timestamp=1565838659915&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-util%2Fdownload%2Frc-util-4.10.0.tgz#25da93c78f996a23998c76922f75d54387c9e9fc"
+  integrity sha1-JdqTx4+ZaiOZjHaSL3XVQ4fJ6fw=
   dependencies:
     add-dom-event-listener "^1.1.0"
     babel-runtime "6.x"
@@ -9002,10 +9013,10 @@ react-scripts@3.1.0:
   optionalDependencies:
     fsevents "2.0.7"
 
-react-slick@~0.24.0:
-  version "0.24.0"
-  resolved "https://registry.npm.taobao.org/react-slick/download/react-slick-0.24.0.tgz#1a4e078a82de4e9458255d9ce26aa6f3b17b168b"
-  integrity sha1-Gk4HioLeTpRYJV2c4mqm87F7Fos=
+react-slick@~0.25.2:
+  version "0.25.2"
+  resolved "https://registry.npm.taobao.org/react-slick/download/react-slick-0.25.2.tgz#56331b67d47d8bcfe2dceb6acab1c8fd5bd1f6bc"
+  integrity sha1-VjMbZ9R9i8/i3OtqyrHI/VvR9rw=
   dependencies:
     classnames "^2.2.5"
     enquire.js "^2.1.6"

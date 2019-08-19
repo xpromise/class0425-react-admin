@@ -18,8 +18,8 @@ export default class Category extends Component {
     isShowUpdateCategoryName: false
   };
 
-  addCategoryFormRef = React.createRef()
-  updateCategoryNameFormRef = React.createRef()
+  addCategoryFormRef = React.createRef();
+  updateCategoryNameFormRef = React.createRef();
 
   componentDidMount() {
     // 请求一级分类数据
