@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Select, Input, Button, Icon, Table, message } from 'antd';
 
-import { reqGetProduct, reqSearchProduct } from '../../../api';
+import { reqGetCategory, reqGetProduct, reqSearchProduct, reqUpdateProductStatus } from '../../../api';
 
 import './index.less';
 
@@ -35,9 +35,10 @@ export default class Index extends Component {
     {
       title: '状态', // 列的标题
       render: (product) => {
+        const { status, _id } = product;
         return <Fragment>
-          <Button type="primary">上架</Button>
-          &nbsp;&nbsp;&nbsp;已下架
+          <Button type="primary" onClick={this.updateProductStatus(_id, status)}>{status === 1 ? '上架' : '下架'}</Button>
+          &nbsp;&nbsp;&nbsp;{status === 1 ? '已下架' : '已上架'}
         </Fragment>
       }
     },
@@ -45,12 +46,52 @@ export default class Index extends Component {
       title: '操作', // 列的标题
       render: (product) => {
         return <Fragment>
-          <Button type="link">详情</Button>
+          <Button type="link" onClick={this.goProductDetail(product)}>详情</Button>
           <Button type="link" onClick={this.goUpdateProduct(product)}>修改</Button>
         </Fragment>
       }
     }
   ];
+
+  goProductDetail = (product) => {
+    return () => {
+      let state = { product };
+      if (product.pCategoryId !== '0') {
+        reqGetCategory(0)
+          .then((data) => {
+            const {name} = data.find(item => item._id === product.pCategoryId);
+            state.pName = name;
+            this.props.history.push('/product/detail', state);
+          })
+          .catch(() => {
+            message.error('访问失败', 3)
+          })
+      }
+    }
+  };
+
+  updateProductStatus = (productId, status) => {
+    return () => {
+      const newStatus = 3 - status;
+      // 发送请求
+      reqUpdateProductStatus(productId, newStatus)
+        .then((res) => {
+          message.success('更新商品状态成功', 3);
+          this.setState({
+            products: this.state.products.map((product) => {
+              if (product._id === productId) {
+                console.log(newStatus);
+                product.status = newStatus;
+              }
+              return product;
+            })
+          })
+        })
+        .catch(() => {
+          message.error('更新商品状态失败', 3);
+        })
+    }
+  };
 
   goUpdateProduct = (product) => {
     return () => {

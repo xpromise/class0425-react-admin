@@ -17,10 +17,16 @@ export default class RichTextEditor extends Component {
   constructor(props) {
     super(props);
 
-    const blocksFromHtml = htmlToDraft(this.props.detail);
+    const { detail, editorChange } = this.props;
+
+    const blocksFromHtml = htmlToDraft(detail);
     const { contentBlocks, entityMap } = blocksFromHtml;
     const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
     const editorState = EditorState.createWithContent(contentState);
+
+    if (detail) {
+      editorChange(detail);
+    }
 
     this.state = {
       editorState

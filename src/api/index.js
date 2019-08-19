@@ -56,6 +56,17 @@ export const reqAddProduct = ({ name, desc, price, detail, categoryId, pCategory
 
 export const reqSearchProduct = (options) => axiosInstance.get('/manage/product/search', { params: options });
 
+export const reqUpdateProduct = ({ _id, name, desc, price, detail, categoryId, pCategoryId }) => axiosInstance.post('/manage/product/update', { _id, name, desc, price, detail, categoryId, pCategoryId });
+
+export const reqUpdateProductStatus = (productId, status) => axiosInstance.post('/manage/product/updateStatus', { productId, status });
+
+
+
+
+
+
+
+
 
 
 

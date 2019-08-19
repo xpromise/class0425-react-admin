@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Card, Icon, Form, Input, Cascader, InputNumber, Button, message } from 'antd';
 
 import RichTextEditor from './rich-text-editor';
-import { reqGetCategory, reqAddProduct } from '../../../api';
+import { reqGetCategory, reqAddProduct, reqUpdateProduct } from '../../../api';
 
 import './index.less';
 
@@ -31,8 +31,15 @@ class SaveUpdate extends Component {
           pCategoryId = id[0];
           categoryId = id[1];
         }
+        let promise;
+        const { state } = this.props.location;
+        if (state) {
+          promise = reqUpdateProduct({ _id: state._id, name, desc, price, detail, categoryId, pCategoryId })
+        } else {
+          promise = reqAddProduct({ name, desc, price, detail, categoryId, pCategoryId })
+        }
         // 发送请求，添加商品
-        reqAddProduct({ name, desc, price, detail, categoryId, pCategoryId })
+        promise
           .then((res) => {
             // 提示成功
             message.success('添加商品成功', 3);
