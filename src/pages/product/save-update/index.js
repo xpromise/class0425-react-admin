@@ -102,8 +102,8 @@ class SaveUpdate extends Component {
         })
       })
       .catch((error) => {
-        console.log(error);
-        message.error('获取分类数据失败~', 3)
+        // console.log(error);
+        message.error('获取分类数据失败~', 3);
       })
 
   }

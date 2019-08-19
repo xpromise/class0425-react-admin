@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Select, Input, Button, Icon, Table, message } from 'antd';
 
-import { reqGetProduct } from '../../../api';
+import { reqGetProduct, reqSearchProduct } from '../../../api';
 
 import './index.less';
 
@@ -10,7 +10,12 @@ const { Option } = Select;
 export default class Index extends Component {
   state = {
     products: [],
-    total: 0
+    total: 0,
+    pageSize: 3,
+    pageNum: 1,
+    searchKey: 'productName',
+    searchValue: '',
+    isSearch: false
   };
 
   columns = [
@@ -59,34 +64,93 @@ export default class Index extends Component {
   }
 
   getProduct = (pageNum, pageSize) => {
-    reqGetProduct(pageNum, pageSize)
-      .then((res) => {
-        message.success('获取产品列表成功', 3);
-        this.setState({
-          products: res.list,
-          total: res.total
+    const { searchValue, isSearch } = this.state;
+    if (isSearch && searchValue) {
+      this.setState({
+        pageNum,
+        pageSize
+      }, () => {
+        // 函数会在更新状态之后触发
+        this.search();
+      });
+    } else {
+      reqGetProduct(pageNum, pageSize)
+        .then((res) => {
+          message.success('获取产品列表成功', 3);
+          this.setState({
+            products: res.list,
+            total: res.total,
+            pageSize,
+            pageNum
+          })
         })
-      })
-      .catch((err) => {
-        message.error(err, 3);
-      })
+        .catch((err) => {
+          message.error(err, 3);
+        })
+    }
   };
 
   goSaveUpdate = () => {
     this.props.history.push('/product/saveupdate');
   };
 
+  handleChange = (key) => {
+    return (e) => {
+      this.setState({
+        [key]: typeof e === 'string' ? e : e.target.value
+      })
+    }
+  };
+
+  // 保存上一份搜索的内容
+  searchValue = '';
+
+  search = (e) => {
+    let { searchKey, searchValue, pageSize, pageNum } = this.state;
+    /*if (!searchValue) {
+      message.error('搜索内容不能为空', 3);
+      return;
+    }*/
+    // 检测是否是点击搜索按钮去搜索
+    pageNum = typeof e === 'object' ? 1 : pageNum;
+
+    // 保存一份searchValue
+    if (typeof e === 'object') {
+      this.searchValue = searchValue;
+    }
+
+    reqSearchProduct({
+      [searchKey]: this.searchValue,
+      pageNum,
+      pageSize
+    })
+      .then((res) => {
+        message.success('搜索产品成功~', 3);
+        this.setState({
+          products: res.list,
+          total: res.total,
+          pageSize,
+          pageNum,
+          isSearch: true
+        })
+      })
+      .catch(() => {
+        message.error('搜索失败', 3);
+      })
+
+  };
+
   render() {
-    const { products, total } = this.state;
+    const { products, total, pageSize, pageNum } = this.state;
 
     return <Card title={
       <Fragment>
-        <Select defaultValue="1">
-          <Option key="1" value="1">根据商品名称</Option>
-          <Option key="2" value="2">根据商品描述</Option>
+        <Select defaultValue="productName" onChange={this.handleChange('searchKey')}>
+          <Option key="1" value="productName">根据商品名称</Option>
+          <Option key="2" value="productDesc">根据商品描述</Option>
         </Select>
-        <Input placeholder="关键字" className="product-input"/>
-        <Button type="primary">搜索</Button>
+        <Input placeholder="关键字" className="product-input" onChange={this.handleChange('searchValue')}/>
+        <Button type="primary" onClick={this.search}>搜索</Button>
       </Fragment>
     } extra={<Button type="primary" onClick={this.goSaveUpdate}><Icon type="plus"/>添加产品</Button>}>
       <Table
@@ -100,6 +164,9 @@ export default class Index extends Component {
           defaultPageSize: 3, // 默认显示数量
           total, // 总数
           onChange: this.getProduct, // 页码发生变化的事件
+          onShowSizeChange: this.getProduct, // pageSize 变化的回调
+          pageSize,
+          current: pageNum
         }}
         rowKey="_id"
       />
