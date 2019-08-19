@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Icon, Form, Input, Cascader, InputNumber, Button, message } from 'antd';
 
-import { reqGetCategory } from '../../../api';
+import RichTextEditor from './rich-text-editor';
+import { reqGetCategory, reqAddProduct } from '../../../api';
 
 import './index.less';
 
@@ -14,7 +15,45 @@ class SaveUpdate extends Component {
 
   submit = (e) => {
     e.preventDefault();
+    // 表单校验
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log(values);
+        const { name, desc, price, id, detail } = values;
 
+        let pCategoryId, categoryId;
+        // 得到categoryId / pCategoryId
+        if (id.length === 1) {
+          pCategoryId = 0;
+          categoryId = id[0];
+        } else {
+          pCategoryId = id[0];
+          categoryId = id[1];
+        }
+        // 发送请求，添加商品
+        reqAddProduct({ name, desc, price, detail, categoryId, pCategoryId })
+          .then((res) => {
+            // 提示成功
+            message.success('添加商品成功', 3);
+            // 返回Index页面
+            this.props.history.push('/product/index');
+          })
+          .catch(() => {
+            message.error('添加商品失败', 3);
+          })
+      }
+    })
+
+  };
+
+  // 自定义收集表单数据
+  editorChange = (text) => {
+    // 设置表单项的值
+    this.props.form.setFields({
+      detail: {
+        value: text
+      }
+    });
   };
 
   componentDidMount() {
@@ -67,11 +106,15 @@ class SaveUpdate extends Component {
 
   };
 
+  goBack = () => {
+    this.props.history.push('/product/index');
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { options } = this.state;
 
-    return <Card title={<Fragment><Icon type="arrow-left"/>&nbsp;&nbsp;添加商品</Fragment>}>
+    return <Card title={<Fragment><Icon onClick={this.goBack} type="arrow-left"/>&nbsp;&nbsp;添加商品</Fragment>}>
       <Form labelCol={{span: 2}} wrapperCol={{span: 8}} onSubmit={this.submit}>
         <Item label="商品名称">
           {
@@ -114,6 +157,7 @@ class SaveUpdate extends Component {
               <Cascader
                 options={options}
                 loadData={this.loadData}
+                placeholder="请选择商品分类"
               />
             )
           }
@@ -137,7 +181,19 @@ class SaveUpdate extends Component {
             )
           }
         </Item>
-        <Item label="商品详情">
+        <Item label="商品详情" wrapperCol={{span: 20}}>
+          {
+            getFieldDecorator(
+              'detail',
+              {
+                rules: [
+                  {required: true, message: '请输入商品详情'}
+                ]
+              }
+            )(
+              <RichTextEditor editorChange={this.editorChange}/>
+            )
+          }
         </Item>
         <Item>
           <Button className="save-update-btn" type="primary" htmlType="submit">提交</Button>

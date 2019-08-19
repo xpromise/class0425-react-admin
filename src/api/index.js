@@ -52,7 +52,7 @@ export const reqGetProduct = (pageNum, pageSize) => axiosInstance.get('/manage/p
   }
 });
 
-
+export const reqAddProduct = ({ name, desc, price, detail, categoryId, pCategoryId }) => axiosInstance.post('/manage/product/add', { name, desc, price, detail, categoryId, pCategoryId });
 
 
 
