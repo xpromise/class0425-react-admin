@@ -32,7 +32,12 @@ export default class RichTextEditor extends Component {
       editorState,
     });
     // 子组件通知父组件值发生了变化
-    const text = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    // 返回值默认有一个换行符，通过trim方法去除
+    let text = draftToHtml(convertToRaw(editorState.getCurrentContent())).trim();
+    // 解决点击时默认值是 <p></p>, 如果是置为空
+    if (/^<p><\/p>$/.test(text)) {
+      text = '';
+    }
     this.props.editorChange(text);
   };
 

@@ -227,7 +227,7 @@ class SaveUpdate extends Component {
               'detail',
               {
                 rules: [
-                  {required: true, message: '请输入商品详情'}
+                  {required: true, message: '输入内容不能为空'}
                 ],
               }
             )(
