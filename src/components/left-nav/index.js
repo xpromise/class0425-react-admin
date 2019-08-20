@@ -18,7 +18,8 @@ class LeftNav extends Component {
     }
     // 筛选menuList
     const roleMenus = data.user.role.menus;
-   const menus = this.filterMenu(menuList, roleMenus);
+    const menus = this.filterMenu(menuList, roleMenus);
+    // console.log(menus);
     this.menus = this.createMenu(pathname, menus);
 
     this.state = {
