@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { Icon, Menu } from "antd";
 
 import { menuList } from '../../config';
+import data from '../../utils/store';
 
 const { SubMenu } = Menu;
 const { Item } = Menu;
@@ -15,12 +16,34 @@ class LeftNav extends Component {
     if (pathname.startsWith('/product')) {
       pathname = '/product'
     }
-    this.menus = this.createMenu(pathname);
+    // 筛选menuList
+    const roleMenus = data.user.role.menus;
+   const menus = this.filterMenu(menuList, roleMenus);
+    this.menus = this.createMenu(pathname, menus);
 
     this.state = {
       selectedKey: ''
     }
   }
+
+  filterMenu = (menuList, roleMenus) => {
+    return menuList.reduce((prev, curr) => {
+      if (roleMenus.includes(curr.key)) {
+        prev.push(curr);
+      } else {
+        // 一级菜单没有配置上，看是否有二级菜单
+        if (curr.children) {
+          const cMenus = curr.children.filter((cMenu) => roleMenus.includes(cMenu.key));
+          if (cMenus.length) {
+            // 可能子菜单有三个，但是添加1个
+            curr.children = cMenus;
+            prev.push(curr);
+          }
+        }
+      }
+      return prev;
+    }, []);
+  };
 
   static getDerivedStateFromProps(nextProps) {
     let { pathname } = nextProps.location;
@@ -42,7 +65,7 @@ class LeftNav extends Component {
     </Item>
   };
 
-  createMenu = (path) => {
+  createMenu = (path, menuList) => {
     return menuList.map((menu) => {
       if (menu.children) {
         // 二级菜单

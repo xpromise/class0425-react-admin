@@ -33,8 +33,8 @@ class Login extends Component {
 
     if (!value) {
       callback('输入的内容不能为空');
-    } else if (value.length < 4) {
-      callback(`${name}长度必须大于4位`);
+    } else if (value.length < 3) {
+      callback(`${name}长度必须大于3位`);
     } else if (value.length > 10) {
       callback(`${name}长度必须小于10位`);
     } else if (!passwordReg.test(value)) {

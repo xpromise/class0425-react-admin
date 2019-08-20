@@ -66,6 +66,10 @@ export const reqAddRole = (name) => axiosInstance.post('/manage/role/add', { nam
 
 export const reqUpdateRole = (_id, auth_name, menus) => axiosInstance.post('/manage/role/update', { _id, auth_name, menus });
 
+export const reqGetUser = () => axiosInstance.get('/manage/user/list');
+
+export const reqAddUser = ({ username, password, phone, email, role_id }) => axiosInstance.post('/manage/user/add', { username, password, phone, email, role_id });
+
 
 
 

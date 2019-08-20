@@ -95,6 +95,7 @@ export default class Role extends Component {
             this.setState({
               isShowAddRoleModal: false
             });
+            console.log(this.addRoleFormRef.current)
             this.addRoleFormRef.current.resetFields();
           })
       }
