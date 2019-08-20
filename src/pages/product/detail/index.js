@@ -15,7 +15,7 @@ export default class Detail extends Component {
   };
 
   render () {
-    const { name, desc, price, pCategoryId, imgs, detail } = this.props.location.state.product;
+    const { name, desc, price, pCategoryId, detail } = this.props.location.state.product;
 
     let category;
     const {pName} = this.props.location.state;

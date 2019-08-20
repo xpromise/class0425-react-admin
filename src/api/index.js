@@ -60,10 +60,11 @@ export const reqUpdateProduct = ({ _id, name, desc, price, detail, categoryId, p
 
 export const reqUpdateProductStatus = (productId, status) => axiosInstance.post('/manage/product/updateStatus', { productId, status });
 
+export const reqGetRole = () => axiosInstance.get('/manage/role/list');
 
+export const reqAddRole = (name) => axiosInstance.post('/manage/role/add', { name });
 
-
-
+export const reqUpdateRole = (_id, auth_name, menus) => axiosInstance.post('/manage/role/update', { _id, auth_name, menus });
 
 
 
