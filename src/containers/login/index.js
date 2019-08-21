@@ -173,8 +173,6 @@ class Login extends Component {
 // const newLogin = Form.create()(Login);
 
 // export default newLogin;
-
-
 /******** redux ********/
 export default connect(
   null,

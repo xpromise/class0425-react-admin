@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Button, Icon, Table, message, Modal } from 'antd';
 
+import { connect } from 'react-redux';
+import { addCategoryAsync, getCategoryAsync, updateCategoryNameAsync } from '../../redux/action-creators';
+
 import { reqGetCategory, reqAddCategory, reqUpdateCategoryName } from '../../api';
 import AddCategoryForm from './add-category-form';
 import UpdateCategoryNameForm from './update-category-name-form';
 
 import './index.less';
 
-export default class Category extends Component {
+class Category extends Component {
   state = {
-    categories: [],
+    // categories: [],
     subCategories: [],
     category: {},
     subCategory: {},
@@ -22,16 +25,9 @@ export default class Category extends Component {
   updateCategoryNameFormRef = React.createRef();
 
   componentDidMount() {
-    // 请求一级分类数据
-    reqGetCategory(0)
-      .then((res) => {
-        this.setState({
-          categories: res
-        })
-      })
-      .catch((error) => {
-        message.error(error, 3);
-      })
+    if (!this.props.categories.length) {
+      this.props.getCategoryAsync(0);
+    }
   }
 
   // 列的数据
@@ -68,7 +64,6 @@ export default class Category extends Component {
         .then((res) => {
           message.success('获取二级分类成功', 3);
           this.setState({
-            subCategories: res,
             isShowSubCategory: true,
             category
           })
@@ -90,7 +85,7 @@ export default class Category extends Component {
   showUpdateCategoryName = (category) => {
     return () => {
       // console.log(category);
-      const key = category.parentId === 0 ? 'category' : 'subCategory';
+      const key = +category.parentId === 0 ? 'category' : 'subCategory';
 
       this.setState({
         isShowUpdateCategoryName: true,
@@ -126,88 +121,100 @@ export default class Category extends Component {
         // 发送请求，请求添加分类
         // console.log(values);
         const { parentId, categoryName } = values;
-        reqAddCategory(parentId, categoryName)
-          .then((res) => {
-            // res就是添加成功的分类数据
-            // console.log(res);
-            // 需要展示添加成功的分类数据
-            const { isShowSubCategory, category } = this.state;
-            const isSubCategories = +parentId !== 0;
-            const key = isSubCategories ? 'subCategories' : 'categories';
 
-            message.success('添加分类成功~', 3);
-            /*
-              如果在一级分类：
-                添加一级分类数据，更新 categories
-                添加二级分类数据，不更新
-              如果在二级分类
-                添加一级分类数据，更新 categories
-                添加二级分类数据，如果当前的一级分类和要更新的一级分类一样，才更新 subCategories
+        const isSubCategories = +parentId !== 0;
 
-                总结：
-                  一级分类必须更新
-                  二级分类，满足如果当前的一级分类和要更新的一级分类一样，才更新
-             */
-            if (isShowSubCategory && parentId !== category._id) {
-              // 是在一级分类中添加二级分类，不需要更新
-              return;
-            }
+        if (!isSubCategories) {
+          // 添加一级分类数据
+          this.props.addCategoryAsync(parentId, categoryName);
+        } else {
+          reqAddCategory(parentId, categoryName)
+            .then((res) => {
+              // res就是添加成功的分类数据
+              // console.log(res);
+              // 需要展示添加成功的分类数据
+              const { isShowSubCategory, category } = this.state;
+              // const key = isSubCategories ? 'subCategories' : 'categories';
+              message.success('添加分类成功~', 3);
+              /*
+                如果在一级分类：
+                  添加一级分类数据，更新 categories
+                  添加二级分类数据，不更新
+                如果在二级分类
+                  添加一级分类数据，更新 categories
+                  添加二级分类数据，如果当前的一级分类和要更新的一级分类一样，才更新 subCategories
 
-            this.setState({
-              [key]: [...this.state[key], res]
-            });
-          })
-          .catch((error) => {
-            // 请求失败，提示错误
-            message.error(error, 3);
-          })
-          .finally(() => {
-            // 不管成功/失败都会触发
-            // 隐藏对话框
-            this.setState({
-              isShowAddCategory: false
-            });
-            // 清空表单数据
-            this.addCategoryFormRef.current.resetFields();
-          })
+                  总结：
+                    一级分类必须更新
+                    二级分类，满足如果当前的一级分类和要更新的一级分类一样，才更新
+               */
+              if (isShowSubCategory && parentId !== category._id) {
+                // 是在一级分类中添加二级分类，不需要更新
+                return;
+              }
+
+              this.setState({
+                subCategories: [...this.state.subCategories, res]
+              });
+            })
+            .catch((error) => {
+              // 请求失败，提示错误
+              message.error(error, 3);
+            })
+        }
+
+        // 不管成功/失败都会触发
+        // 隐藏对话框
+        this.setState({
+          isShowAddCategory: false
+        });
+        // 清空表单数据
+        this.addCategoryFormRef.current.resetFields();
       }
     })
 
   };
 
   updateCategoryName = () => {
+
     this.updateCategoryNameFormRef.current.validateFields((err, values) => {
       if (!err) {
         // 发送请求
         // console.log(values);
-        const { isShowSubCategory } = this.state;
         const { categoryName } = values;
 
-        const key = isShowSubCategory ? 'subCategory' : 'category';
-        const categoryId = this.state[key]._id;
-        reqUpdateCategoryName(categoryId,categoryName)
-          .then((res) => {
-            message.success('更新分类名称成功~', 3);
-            const key = isShowSubCategory ? 'subCategories' : 'categories';
-            // 更新状态数据
-            this.setState({
-              [key]: this.state[key].map((category) => {
-                if (category._id === categoryId) {
-                  category.name = categoryName;
-                }
-                return category;
+        const { isShowSubCategory } = this.state;
+
+        if (!isShowSubCategory) {
+          const categoryId = this.state.category._id;
+
+          // 更新一级分类
+          this.props.updateCategoryNameAsync(categoryId,categoryName);
+        } else {
+          const categoryId = this.state.subCategory._id;
+
+          reqUpdateCategoryName(categoryId,categoryName)
+            .then((res) => {
+              message.success('更新分类名称成功~', 3);
+              // 更新状态数据
+              this.setState({
+                subCategories: this.state.subCategories.map((category) => {
+                  if (category._id === categoryId) {
+                    category.name = categoryName;
+                  }
+                  return category;
+                })
               })
             })
-          })
-          .catch((error) => {
-            message.error(error, 3);
-          })
-          .finally(() => {
-            this.setState({
-              isShowUpdateCategoryName: false
-            });
-            this.updateCategoryNameFormRef.current.resetFields();
-          })
+            .catch((error) => {
+              message.error(error, 3);
+            })
+        }
+
+        this.setState({
+          isShowUpdateCategoryName: false
+        });
+        this.updateCategoryNameFormRef.current.resetFields();
       }
     })
   };
@@ -219,27 +226,8 @@ export default class Category extends Component {
   };
 
   render() {
-    const { categories, subCategories, category, subCategory, isShowAddCategory, isShowSubCategory, isShowUpdateCategoryName } = this.state;
-
-    // 每一行的具体数据
-    /*const data = [
-      {
-        _id: '1',
-        categoryName: '手机1111'
-      },
-      {
-        _id: '2',
-        categoryName: '手机2222'
-      },
-      {
-        _id: '3',
-        categoryName: '手机3333'
-      },
-      {
-        _id: '4',
-        categoryName: '手机4444'
-      },
-    ];*/
+    const { subCategories, category, subCategory, isShowAddCategory, isShowSubCategory, isShowUpdateCategoryName } = this.state;
+    const { categories } = this.props;
 
     return <Card title={
       isShowSubCategory ? <Fragment><Button type="link" className="category-btn" onClick={this.goBack}>一级分类</Button><Icon type="arrow-right"/><span className="category-text">{category.name}</span></Fragment> : "一级分类列表"
@@ -284,3 +272,11 @@ export default class Category extends Component {
     </Card>;
   }
 }
+
+/***** redux ******/
+export default connect(
+  (state) => ({categories: state.categories}),
+  { addCategoryAsync, getCategoryAsync, updateCategoryNameAsync }
+)(
+  Category
+)

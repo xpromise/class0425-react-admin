@@ -24,7 +24,7 @@ import logo from '../../assets/images/logo.png';
 import './index.less';
 
 const Home = lazy(() => import(/* webpackChunkName: "home", webpackPrefetch: true */'../../pages/home'));
-const Category = lazy(() => import(/* webpackChunkName: "category", webpackPrefetch: true */'../../pages/category'));
+const Category = lazy(() => import(/* webpackChunkName: "category", webpackPrefetch: true */'../category'));
 const Product = lazy(() => import(/* webpackChunkName: "product", webpackPrefetch: true */'../../pages/product'));
 const User = lazy(() => import(/* webpackChunkName: "user", webpackPrefetch: true */'../../pages/user'));
 const Role = lazy(() => import(/* webpackChunkName: "role", webpackPrefetch: true */'../../pages/role'));
