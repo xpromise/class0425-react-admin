@@ -3,8 +3,11 @@ import { Button, Modal, message } from 'antd';
 import { withRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 
+import { connect } from 'react-redux';
+import { removeUser } from '../../redux/action-creators';
+
 import { removeItem } from '../../utils/storage';
-import data from '../../utils/store';
+// import data from '../../utils/store';
 import { menuList } from '../../config';
 import { reqWeather } from '../../api';
 
@@ -31,7 +34,7 @@ class HeaderMain extends Component {
       onOk: () => {
         // 移除用户数据 （本地 / 内存）
         removeItem();
-        data.user = {};
+        this.props.removeUser();
         // 退出登录成功
         message.success('退出登录成功', 3);
         // 跳转到登录页面
@@ -119,7 +122,7 @@ class HeaderMain extends Component {
 
     return <div className="header-main">
       <div className="header-main-top">
-        <span>欢迎，{data.user.username}</span>
+        <span>欢迎，{this.props.user.username}</span>
         <Button type="link" onClick={this.logout}>退出</Button>
       </div>
       <div className="header-main-bottom">
@@ -134,4 +137,7 @@ class HeaderMain extends Component {
   }
 }
 
-export default withRouter(HeaderMain);
+export default connect(
+  (state) => ({user: state.user}),
+  { removeUser }
+)(withRouter(HeaderMain));

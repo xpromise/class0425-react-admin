@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Input, Icon, Button, message } from 'antd';
+
+import { connect } from 'react-redux';
+import { saveUser } from '../../redux/action-creators';
+
 import { reqLogin } from '../../api';
-import data from '../../utils/store';
 import { setItem } from '../../utils/storage';
 
 import logo from '../../assets/images/logo.png';
@@ -9,7 +12,6 @@ import logo from '../../assets/images/logo.png';
 import './index.less';
 // 定义变量，不能写在import上面，会报eslint的错误
 const Item = Form.Item;
-
 
 class Login extends Component {
 
@@ -67,8 +69,8 @@ class Login extends Component {
             // console.log(response);
             // 提示请求成功
             message.success('登录成功~', 3);
-            // 存储用户数据到内存中
-            data.user = response;
+            // 将用户数据存储在redux中
+            this.props.saveUser(response);
             // 存储用户数据到本地中
             setItem(response);
             // 跳转到admin页面 -- 修改url地址为 /
@@ -172,4 +174,11 @@ class Login extends Component {
 
 // export default newLogin;
 
-export default Form.create()(Login);
+
+/******** redux ********/
+export default connect(
+  null,
+  { saveUser }
+)(
+  Form.create()(Login)
+)

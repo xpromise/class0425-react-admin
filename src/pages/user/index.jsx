@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Button, Table, Modal, message } from 'antd';
 import dayjs from "dayjs";
 
-import {reqAddRole, reqGetUser, reqAddUser, reqGetRole, } from '../../api';
+import { reqGetUser, reqAddUser, reqGetRole } from '../../api';
 
 import AddUserForm from './add-user-form';
 import UpdateUserForm from './update-user-form';

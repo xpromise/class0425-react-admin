@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Admin from './pages/admin';
-import Login from './pages/login';
+import Admin from './containers/admin';
+import Login from './containers/login';
 
 import './App.css';
 

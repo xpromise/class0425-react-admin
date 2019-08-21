@@ -25,7 +25,7 @@ export default class Role extends Component {
     reqGetRole()
       .then((res) => {
         message.success('获取角色列表成功', 3);
-        console.log(res);
+        // console.log(res);
         this.setState({
           roles: res
         })

@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { Link, withRouter } from "react-router-dom";
 import { Icon, Menu } from "antd";
 
+import { connect } from 'react-redux';
+
 import { menuList } from '../../config';
-import data from '../../utils/store';
 
 const { SubMenu } = Menu;
 const { Item } = Menu;
@@ -17,14 +18,27 @@ class LeftNav extends Component {
       pathname = '/product'
     }
     // 筛选menuList
-    const roleMenus = data.user.role.menus;
+    const roleMenus = this.props.user.role.menus;
     const menus = this.filterMenu(menuList, roleMenus);
     // console.log(menus);
     this.menus = this.createMenu(pathname, menus);
 
     this.state = {
       selectedKey: ''
+    };
+  }
+
+  // 对每一个组件进行验证是否有不必要的render
+  // 如果有，定义shouldComponentUpdate来优化
+  // 优化，当前组件不用重新render
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    for (const key in nextState) {
+      if (nextState[key] !== this.state[key]) {
+        // 之前状态和最新状态不一样，需要更新
+        return true;
+      }
     }
+    return false;
   }
 
   filterMenu = (menuList, roleMenus) => {
@@ -46,7 +60,7 @@ class LeftNav extends Component {
     }, []);
   };
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     let { pathname } = nextProps.location;
     // startsWith 以什么开头
     if (pathname.startsWith('/product')) {
@@ -89,6 +103,7 @@ class LeftNav extends Component {
   };
 
   render() {
+    console.log('render');
     return <Menu theme="dark" selectedKeys={[this.state.selectedKey]} defaultOpenKeys={[this.openKey]} mode="inline">
       {
         this.menus
@@ -97,5 +112,8 @@ class LeftNav extends Component {
   }
 }
 
-// withRouter是一个高阶组件：负责给LeftNav传递路由组件的三大属性
-export default withRouter(LeftNav);
+/******* redux ******/
+export default connect(
+  (state) => ({user: state.user}),
+  null
+)(withRouter(LeftNav));
