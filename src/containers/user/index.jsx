@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { Card, Button, Table, Modal, message } from 'antd';
 import dayjs from "dayjs";
 
+import { connect } from 'react-redux';
+import { getRoleAsync } from '../../redux/action-creators';
+
 import { reqGetUser, reqAddUser, reqGetRole } from '../../api';
 
 import AddUserForm from './add-user-form';
 import UpdateUserForm from './update-user-form';
 
-export default class User extends Component {
+class User extends Component {
   state = {
     users: [], //用户数组
-    roles: [],
     isShowAddUserModal: false, //是否展示创建用户的标识
     isShowUpdateUserModal: false, //是否展示更新用户的标识
   };
@@ -40,7 +42,7 @@ export default class User extends Component {
       title: '所属角色',
       dataIndex: 'role_id',
       render: (id) => {
-        const role = this.state.roles.find((role) => role._id === id);
+        const role = this.props.roles.find((role) => role._id === id);
         return role ? role.name : '';
       }
     },
@@ -67,16 +69,9 @@ export default class User extends Component {
         message.error('获取用户列表失败', 3);
       });
 
-    reqGetRole()
-      .then((res) => {
-        message.success('获取角色列表成功', 3);
-        this.setState({
-          roles: res
-        })
-      })
-      .catch(() => {
-        message.error('获取角色列表失败', 3);
-      })
+    if (!this.props.roles.length) {
+      this.props.getRoleAsync();
+    }
   }
 
   //创建用户的回调函数
@@ -118,7 +113,8 @@ export default class User extends Component {
   };
   
   render () {
-    const { users, roles, isShowAddUserModal, isShowUpdateUserModal } = this.state;
+    const { users, isShowAddUserModal, isShowUpdateUserModal } = this.state;
+    const { roles } = this.props;
     
     return (
       <Card
@@ -165,3 +161,10 @@ export default class User extends Component {
     )
   }
 }
+
+export default connect(
+  (state) => ({roles: state.roles}),
+  { getRoleAsync }
+)(
+  User
+)
