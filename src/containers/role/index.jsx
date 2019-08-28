@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { Card, Button, Table, Radio, Modal, message } from 'antd';
 import dayjs from 'dayjs';
 
+import { connect } from 'react-redux';
+import { getRoleAsync, addRoleAsync, updateRoleAsync } from '../../redux/action-creators';
+
 import AddRoleForm from './add-role-form';
 import UpdateRoleForm from './update-role-form';
 
-import { reqGetRole, reqAddRole, reqUpdateRole } from '../../api';
-
 const RadioGroup = Radio.Group;
 
-export default class Role extends Component {
+class Role extends Component {
   state = {
     value: '',  //单选的默认值，也就是选中的某个角色的id值
-    roles: [], //权限数组
     isShowAddRoleModal: false, //是否展示创建角色的标识
     isShowUpdateRoleModal: false, //是否展示设置角色的标识
     isDisabled: true
@@ -22,17 +22,9 @@ export default class Role extends Component {
   updateRoleFormRef = React.createRef();
 
   componentDidMount() {
-    reqGetRole()
-      .then((res) => {
-        message.success('获取角色列表成功', 3);
-        // console.log(res);
-        this.setState({
-          roles: res
-        })
-      })
-      .catch(() => {
-        message.error('获取角色列表失败', 3);
-      })
+    if (!this.props.roles.length) {
+      this.props.getRoleAsync();
+    }
   }
 
   columns = [
@@ -81,23 +73,12 @@ export default class Role extends Component {
       if (!err) {
         const { name } = values;
         // 发送请求
-        reqAddRole(name)
-          .then((res) => {
-            message.success('添加角色成功', 3);
-            this.setState({
-              roles: [...this.state.roles, res],
-            })
-          })
-          .catch(() => {
-            message.error('添加角色失败', 3);
-          })
-          .finally(() => {
-            this.setState({
-              isShowAddRoleModal: false
-            });
-            console.log(this.addRoleFormRef.current)
-            this.addRoleFormRef.current.resetFields();
-          })
+        this.props.addRoleAsync(name);
+
+        this.setState({
+          isShowAddRoleModal: false
+        });
+        this.addRoleFormRef.current.resetFields();
       }
     })
   };
@@ -105,37 +86,21 @@ export default class Role extends Component {
   updateRole = () => {
     this.updateRoleFormRef.current.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
-        const { name, menus } = values;
+        const { menus } = values;
+        const name = this.props.name;
         const _id = this.state.value;
-        reqUpdateRole(_id, name, menus)
-          .then((res) => {
-            console.log(res);
-            message.success('更新角色成功', 3);
-            this.setState({
-              roles: this.state.roles.map((role) => {
-                if (role._id === _id) {
-                  return res;
-                }
-                return role;
-              })
-            })
-          })
-          .catch(() => {
-            message.error('更新角色失败', 3);
-          })
-          .finally(() => {
-            this.setState({
-              isShowUpdateRoleModal: false
-            });
-            this.updateRoleFormRef.current.resetFields();
-          })
+        this.props.updateRoleAsync(_id, name, menus);
+        this.setState({
+          isShowUpdateRoleModal: false
+        });
+        this.updateRoleFormRef.current.resetFields();
       }
     })
   };
   
   render () {
-    const { roles, value, isDisabled, isShowAddRoleModal, isShowUpdateRoleModal } = this.state;
+    const { value, isDisabled, isShowAddRoleModal, isShowUpdateRoleModal } = this.state;
+    const { roles } = this.props;
 
     const role = roles.find((role) => role._id === value);
     const name = role ? role.name : '';
@@ -190,3 +155,14 @@ export default class Role extends Component {
     )
   }
 }
+
+export default connect(
+  (state) => ({roles: state.roles, name: state.user.username}),
+  {
+    getRoleAsync,
+    addRoleAsync,
+    updateRoleAsync
+  }
+)(
+  Role
+)

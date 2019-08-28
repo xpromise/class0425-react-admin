@@ -27,7 +27,7 @@ const Home = lazy(() => import(/* webpackChunkName: "home", webpackPrefetch: tru
 const Category = lazy(() => import(/* webpackChunkName: "category", webpackPrefetch: true */'../category'));
 const Product = lazy(() => import(/* webpackChunkName: "product", webpackPrefetch: true */'../../pages/product'));
 const User = lazy(() => import(/* webpackChunkName: "user", webpackPrefetch: true */'../../pages/user'));
-const Role = lazy(() => import(/* webpackChunkName: "role", webpackPrefetch: true */'../../pages/role'));
+const Role = lazy(() => import(/* webpackChunkName: "role", webpackPrefetch: true */'../role'));
 const Line = lazy(() => import(/* webpackChunkName: "line", webpackPrefetch: true */'../../pages/charts/line'));
 const Bar = lazy(() => import(/* webpackChunkName: "bar", webpackPrefetch: true */'../../pages/charts/bar'));
 const Pie = lazy(() => import(/* webpackChunkName: "pie", webpackPrefetch: true */'../../pages/charts/pie'));

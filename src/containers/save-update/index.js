@@ -150,7 +150,6 @@ class SaveUpdate extends Component {
         id: [state.categoryId]
       };
     }
-
   }
 
   loadData = (selectedOptions) => {
