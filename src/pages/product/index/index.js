@@ -55,18 +55,7 @@ export default class Index extends Component {
 
   goProductDetail = (product) => {
     return () => {
-      let state = { product };
-      if (product.pCategoryId !== '0') {
-        reqGetCategory(0)
-          .then((data) => {
-            const {name} = data.find(item => item._id === product.pCategoryId);
-            state.pName = name;
-            this.props.history.push('/product/detail', state);
-          })
-          .catch(() => {
-            message.error('访问失败', 3)
-          })
-      }
+      this.props.history.push('/product/detail', product);
     }
   };
 

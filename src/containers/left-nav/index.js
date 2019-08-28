@@ -103,7 +103,6 @@ class LeftNav extends Component {
   };
 
   render() {
-    console.log('render');
     return <Menu theme="dark" selectedKeys={[this.state.selectedKey]} defaultOpenKeys={[this.openKey]} mode="inline">
       {
         this.menus
