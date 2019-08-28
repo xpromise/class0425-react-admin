@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { connect } from 'react-redux';
 import { getRoleAsync } from '../../redux/action-creators';
 
-import { reqGetUser, reqAddUser, reqGetRole } from '../../api';
+import { reqGetUser, reqAddUser } from '../../api';
 
 import AddUserForm from './add-user-form';
 import UpdateUserForm from './update-user-form';

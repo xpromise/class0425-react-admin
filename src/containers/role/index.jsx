@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button, Table, Radio, Modal, message } from 'antd';
+import { Card, Button, Table, Radio, Modal } from 'antd';
 import dayjs from 'dayjs';
 
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Select, Input, Button, Icon, Table, message } from 'antd';
 
-import { reqGetCategory, reqGetProduct, reqSearchProduct, reqUpdateProductStatus } from '../../../api';
+import { reqGetProduct, reqSearchProduct, reqUpdateProductStatus } from '../../../api';
 
 import './index.less';
 
