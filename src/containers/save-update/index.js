@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Icon, Form, Input, Cascader, InputNumber, Button, message } from 'antd';
 
+import { connect } from 'react-redux';
+import { getCategoryAsync } from '../../redux/action-creators';
+
 import RichTextEditor from './rich-text-editor';
 import { reqGetCategory, reqAddProduct, reqUpdateProduct } from '../../api';
 
@@ -11,7 +14,8 @@ const { Item } = Form;
 class SaveUpdate extends Component {
   state = {
     options: [],
-    id: []
+    id: [],
+    subCategories: []
   };
 
   submit = (e) => {
@@ -65,53 +69,87 @@ class SaveUpdate extends Component {
   };
 
   componentDidMount() {
-    const promiseArr = [];
-
-    promiseArr.push(reqGetCategory(0));
+    if (!this.props.categories.length) {
+      this.props.getCategoryAsync(0);
+    }
 
     const { state } = this.props.location;
-
-    if (state) {
-      if (+state.pCategoryId === 0) {
-        this.setState({
-          id: [state.categoryId]
+    if (state && state.pCategoryId !== '0') {
+      // 请求二级分类数据
+      reqGetCategory(state.pCategoryId)
+        .then((res) => {
+          this.setState({
+            subCategories: res
+          })
         })
-      } else {
-        // 请求二级分类数据
-        promiseArr.push(reqGetCategory(state.pCategoryId));
+        .catch((error) => {
+          // console.log(error);
+          message.error('获取二级分类数据失败~', 3);
+        })
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { state } = nextProps.location;
+
+    if (prevState.options.length) {
+      return prevState;
+    }
+
+    if (!state) {
+      if (!nextProps.categories.length) {
+        return prevState;
+      }
+      // 数据请求回来了，是添加产品
+      return {
+        options: nextProps.categories.map((category) => {
+          return {
+            label: category.name,
+            value: category._id,
+            isLeaf: false // 设置加载二级菜单
+          };
+        })
       }
     }
 
-    Promise.all(promiseArr)
-      .then((res) => {
-        const [categories, subCategories] = res;
+    if (state.pCategoryId !== '0') {
+      if (!prevState.subCategories.length) {
+        return prevState;
+      }
+      // 数据回来了，是更新产品，并有二级分类
+      return {
+        options: nextProps.categories.map((category) => {
+          const option = {
+            label: category.name,
+            value: category._id,
+            isLeaf: false // 设置加载二级菜单
+          };
 
-        this.setState({
-          options: categories.map((category) => {
-            const option = {
-              label: category.name,
-              value: category._id,
-              isLeaf: false // 设置加载二级菜单
-            };
-            // 判断是否有二级分类
-            if (subCategories && (category._id === state.pCategoryId)) {
-              option.children = subCategories.map((subCategory) => {
-                return {
-                  label: subCategory.name,
-                  value: subCategory._id,
-                }
-              })
-            }
+          if (category._id === state.pCategoryId) {
+            option.children = prevState.subCategories.map((subCategory) => {
+              return {
+                label: subCategory.name,
+                value: subCategory._id,
+              }
+            })
+          }
 
-            return option;
-          }),
-          id: subCategories ? [state.pCategoryId, state.categoryId] : this.state.id
-        })
-      })
-      .catch((error) => {
-        // console.log(error);
-        message.error('获取分类数据失败~', 3);
-      })
+          return option;
+        }),
+        id: [state.pCategoryId, state.categoryId]
+      };
+    } else {
+      return {
+        options: nextProps.categories.map((category) => {
+          return {
+            label: category.name,
+            value: category._id,
+            isLeaf: false // 设置加载二级菜单
+          };
+        }),
+        id: [state.categoryId]
+      };
+    }
 
   }
 
@@ -250,4 +288,9 @@ class SaveUpdate extends Component {
   }
 }
 
-export default Form.create()(SaveUpdate);
+export default connect(
+  (state) => ({categories: state.categories}),
+  { getCategoryAsync }
+)(
+  Form.create()(SaveUpdate)
+);
