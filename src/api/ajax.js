@@ -6,7 +6,8 @@
  */
 
 import axios from 'axios';
-
+import store from '../redux/store';
+import { getItem } from '../utils/storage';
 // 怎么区分开发环境和生产环境
 // console.log(process.env.NODE_ENV); // 是nodejs的一个模块process
 const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:5000';
@@ -19,6 +20,25 @@ const axiosInstance = axios.create({
 });
 
 // 设置拦截器/中间件
+// 请求拦截器：用来设置token
+axiosInstance.interceptors.request.use(
+  // 发送请求之前的回调
+  (config) => {
+    const token = store.getState().token || getItem('token');
+    if (token) {
+      config.headers['authorization'] = token;
+    }
+    return config;
+  },
+  // 发送请求失败的回调
+  (error) => {
+    console.log('请求失败~', error);
+    // 响应失败、网络错误
+    return Promise.reject('网络出现故障，请刷新试试');
+  }
+);
+
+// 响应拦截器：用来处理响应
 axiosInstance.interceptors.response.use(
   // 响应成功的回调
   (response) => {
@@ -37,7 +57,6 @@ axiosInstance.interceptors.response.use(
     }
   },
   // 响应失败的回调
-  // 默认返回的成功的promise
   (error) => {
     console.log('请求失败~', error);
     // 响应失败、网络错误

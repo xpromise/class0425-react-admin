@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { connect } from 'react-redux';
 import { getRoleAsync } from '../../redux/action-creators';
 
-import { reqGetUser, reqAddUser } from '../../api';
+import { reqGetUserList, reqAddUser } from '../../api';
 
 import AddUserForm from './add-user-form';
 import UpdateUserForm from './update-user-form';
@@ -58,7 +58,7 @@ class User extends Component {
   ];
 
   componentDidMount() {
-    reqGetUser()
+    reqGetUserList()
       .then((res) => {
         message.success('获取用户列表成功', 3);
         this.setState({

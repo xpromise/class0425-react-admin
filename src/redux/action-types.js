@@ -1,3 +1,5 @@
+export const SAVE_TOKEN = 'SAVE_TOKEN';
+export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const SAVE_USER = 'SAVE_USER';
 export const REMOVE_USER = 'REMOVE_USER';
 export const ADD_CATEGORY_SUCCESS = 'ADD_CATEGORY_SUCCESS';

@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Admin from './containers/admin';
 import Login from './containers/login';
 
+import checkLogin from './containers/check-login';
+
 import './App.css';
 
 export default class App extends Component {
@@ -14,7 +16,7 @@ export default class App extends Component {
       */}
       <Switch>
         <Route path="/login" component={Login}/>
-        <Route path="/" component={Admin}/>
+        <Route path="/" component={checkLogin(Admin)}/>
       </Switch>
     </Router>;
   }

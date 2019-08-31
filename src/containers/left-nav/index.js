@@ -18,9 +18,9 @@ class LeftNav extends Component {
       pathname = '/product'
     }
     // 筛选menuList
-    const roleMenus = this.props.user.role.menus;
+    const roleMenus = this.props.user.menus;
     const menus = this.filterMenu(menuList, roleMenus);
-    // console.log(menus);
+
     this.menus = this.createMenu(pathname, menus);
 
     this.state = {

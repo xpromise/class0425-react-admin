@@ -4,8 +4,8 @@ import axiosInstance from './ajax';
 // 定义登录请求方法
 export const reqLogin = (username, password) => axiosInstance.post('/login', {username, password});
 
-// 定义验证用户信息的方法
-export const reqValidateUser = (id) => axiosInstance.post('/validate/user', {id});
+// 定义获取用户信息的方法
+export const reqGetUser = () => axiosInstance.get('/user');
 
 // 定义请求天气的方法
 export const reqWeather = (cityName) => {
@@ -66,7 +66,7 @@ export const reqAddRole = (name) => axiosInstance.post('/manage/role/add', { nam
 
 export const reqUpdateRole = (_id, auth_name, menus) => axiosInstance.post('/manage/role/update', { _id, auth_name, menus });
 
-export const reqGetUser = () => axiosInstance.get('/manage/user/list');
+export const reqGetUserList = () => axiosInstance.get('/manage/user/list');
 
 export const reqAddUser = ({ username, password, phone, email, role_id }) => axiosInstance.post('/manage/user/add', { username, password, phone, email, role_id });
 

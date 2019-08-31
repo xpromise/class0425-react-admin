@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Input, Icon, Button, message } from 'antd';
 
 import { connect } from 'react-redux';
-import { saveUser } from '../../redux/action-creators';
+import { saveToken } from '../../redux/action-creators';
 
 import { reqLogin } from '../../api';
 import { setItem } from '../../utils/storage';
@@ -69,15 +69,13 @@ class Login extends Component {
             // console.log(response);
             // 提示请求成功
             message.success('登录成功~', 3);
-            // 将用户数据存储在redux中
-            this.props.saveUser(response);
-            // 存储用户数据到本地中
-            setItem(response);
+            // 将用户token存储在redux中
+            this.props.saveToken(response);
+            // 存储用户token到本地中
+            setItem('token', response);
             // 跳转到admin页面 -- 修改url地址为 /
             // 编程式导航
             this.props.history.replace('/');
-            // 下面方式不行
-            /*<Redirect to="/login"/>;*/
           })
           .catch((error) => {
             // 请求失败
@@ -176,7 +174,7 @@ class Login extends Component {
 /******** redux ********/
 export default connect(
   null,
-  { saveUser }
+  { saveToken }
 )(
   Form.create()(Login)
 )

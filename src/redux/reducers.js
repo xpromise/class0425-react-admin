@@ -1,6 +1,8 @@
 
 import { combineReducers } from 'redux';
 import {
+  SAVE_TOKEN,
+  REMOVE_TOKEN,
   SAVE_USER,
   REMOVE_USER,
   ADD_CATEGORY_SUCCESS,
@@ -10,6 +12,17 @@ import {
   ADD_ROLE_SUCCESS,
   UPDATE_ROLE_SUCCESS
 } from './action-types';
+
+function token(prevState = '', action) {
+  switch (action.type) {
+    case SAVE_TOKEN :
+      return action.data;
+    case REMOVE_TOKEN :
+      return '';
+    default :
+      return prevState;
+  }
+}
 
 function user(prevState = {}, action) {
   switch (action.type) {
@@ -59,6 +72,7 @@ function roles(prevState = [], action) {
 }
 
 export default combineReducers({
+  token,
   user,
   categories,
   roles

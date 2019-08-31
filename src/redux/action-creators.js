@@ -3,6 +3,8 @@
  */
 import { message } from 'antd';
 import {
+  SAVE_TOKEN,
+  REMOVE_TOKEN,
   SAVE_USER,
   REMOVE_USER,
   ADD_CATEGORY_SUCCESS,
@@ -18,12 +20,35 @@ import {
   reqUpdateCategoryName,
   reqGetRole,
   reqAddRole,
-  reqUpdateRole
+  reqUpdateRole,
+  reqGetUser
 } from '../api';
+
+// 保存用户token数据action
+export const saveToken = (token) => ({type: SAVE_TOKEN, data: token});
+// 删除用户token数据action
+export const removeToken = () => ({type: REMOVE_TOKEN});
+
 // 保存用户数据action
-export const saveUser = (user) => ({type: SAVE_USER, data: user});
+export const getUserSuccess = (user) => ({type: SAVE_USER, data: user});
 // 删除用户数据action
 export const removeUser = () => ({type: REMOVE_USER});
+
+export const getUser = () => {
+  return (dispatch) => {
+    reqGetUser()
+      .then((res) => {
+        // 提示请求成功
+        message.success('获取用户数据成功', 3);
+        // 更新redux中的状态数据
+        dispatch(getUserSuccess(res));
+      })
+      .catch(() => {
+        // 提示请求失败
+        message.error('获取用户数据失败', 3);
+      })
+  }
+};
 
 // 获取分类数据同步action
 export const getCategorySuccess = (categories) => ({type: GET_CATEGORY_SUCCESS, data: categories});
