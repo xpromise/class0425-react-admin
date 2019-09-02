@@ -1,18 +1,18 @@
 /*
   封装了localStorage的函数模块
  */
-const TOKEN_KEY = 'token';
 
-function getItem() {
-  return JSON.parse(localStorage.getItem(TOKEN_KEY))
+function getItem(key) {
+  const result = JSON.parse(localStorage.getItem(key));
+  return key === 'user' ? result || {} : result;
 }
 
-function setItem(user) {
-  localStorage.setItem(TOKEN_KEY, JSON.stringify(user));
+function setItem(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-function removeItem() {
-  localStorage.removeItem(TOKEN_KEY);
+function removeItem(key) {
+  localStorage.removeItem(key);
 }
 
 export {

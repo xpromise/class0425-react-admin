@@ -1,4 +1,5 @@
-const { override, fixBabelImports, addLessLoader } = require('customize-cra');
+const { override, fixBabelImports, addLessLoader, addDecoratorsLegacy, addWebpackAlias } = require('customize-cra');
+const { resolve } = require('path');
 
 module.exports = override(
   fixBabelImports('import', {
@@ -10,4 +11,13 @@ module.exports = override(
     javascriptEnabled: true,
     modifyVars: { '@primary-color': '#1DA57A' },
   }),
+  // 添加装饰器语法，简化高阶组件使用
+  addDecoratorsLegacy(),
+  // 添加webpack alias语法： 优点：可以简化路径  缺点：没有路径提示
+  addWebpackAlias({
+    '@utils': resolve(__dirname, 'src/utils'),
+    '@config': resolve(__dirname, 'src/config'),
+    '@redux': resolve(__dirname, 'src/redux'),
+    '@api': resolve(__dirname, 'src/api'),
+  })
 );

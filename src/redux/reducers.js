@@ -1,79 +1,47 @@
-
 import { combineReducers } from 'redux';
+
 import {
-  SAVE_TOKEN,
-  REMOVE_TOKEN,
-  SAVE_USER,
+  LOGIN_SUCCESS,
   REMOVE_USER,
-  ADD_CATEGORY_SUCCESS,
-  GET_CATEGORY_SUCCESS,
-  UPDATE_CATEGORY_NAME_SUCCESS,
-  GET_ROLE_SUCCESS,
-  ADD_ROLE_SUCCESS,
-  UPDATE_ROLE_SUCCESS
 } from './action-types';
 
-function token(prevState = '', action) {
-  switch (action.type) {
-    case SAVE_TOKEN :
-      return action.data;
-    case REMOVE_TOKEN :
-      return '';
-    default :
-      return prevState;
-  }
-}
+import { getItem, setItem, removeItem } from '../utils/storage';
 
-function user(prevState = {}, action) {
+const userData = getItem('user');
+const token = getItem('token');
+// 初始化用户数据
+const initUser = {
+  hasLogin: userData.username && token,
+  data: userData,
+  token: token
+};
+
+function user(prevState = initUser, action) {
   switch (action.type) {
-    case SAVE_USER :
-      return action.data;
+    case LOGIN_SUCCESS :
+      const { user, token } = action.data;
+      // 保存在本地
+      setItem('user', user);
+      setItem('token', token);
+      // 更新state
+      return {
+        hasLogin: true,
+        data: user,
+        token
+      };
     case REMOVE_USER :
-      return {};
-    default :
-      return prevState;
-  }
-}
-
-function categories(prevState = [], action) {
-  switch (action.type) {
-    case GET_CATEGORY_SUCCESS :
-      return action.data;
-    case ADD_CATEGORY_SUCCESS :
-      return [...prevState, action.data];
-    case UPDATE_CATEGORY_NAME_SUCCESS :
-      return prevState.map((category) => {
-        if (category._id === action.data.categoryId) {
-          category.name = action.data.categoryName;
-        }
-        return category;
-      });
-    default :
-      return prevState;
-  }
-}
-
-function roles(prevState = [], action) {
-  switch (action.type) {
-    case GET_ROLE_SUCCESS :
-      return action.data;
-    case ADD_ROLE_SUCCESS :
-      return [...prevState, action.data];
-    case UPDATE_ROLE_SUCCESS :
-      return prevState.map((role) => {
-        if (role._id === action.data._id) {
-          return action.data;
-        }
-        return role;
-      });
+      removeItem('user');
+      removeItem('token');
+      return {
+        hasLogin: false,
+        data: {},
+        token: ''
+      };
     default :
       return prevState;
   }
 }
 
 export default combineReducers({
-  token,
-  user,
-  categories,
-  roles
+  user
 })

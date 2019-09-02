@@ -1,0 +1,30 @@
+{
+  "route": {
+    "dashboard": "首页",
+    "products": "商品",
+    "category": "分类管理",
+    "product": "商品管理",
+    "user": "用户管理",
+    "role": "权限管理",
+    "charts": "图形图表",
+    "line": "折线图",
+    "bar": "柱状图",
+    "pie": "饼状图"
+  },
+  "admin": {
+    "title": "硅谷后台",
+    "header": "欢迎, ",
+    "btnText": "退出",
+    "logoutText": "您确认要退出登录吗",
+    "okText": "确认",
+    "cancelText": "取消",
+    "footer": "欢迎使用硅谷后台管理系统~~"
+  },
+  "login": {
+    "title": "React项目: 后台管理系统",
+    "logTitle": "用户登录",
+    "username": "用户名",
+    "password": "密码",
+    "btn": "登录"
+  }
+}

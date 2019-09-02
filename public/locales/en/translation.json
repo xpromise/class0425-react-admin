@@ -1,0 +1,30 @@
+{
+  "route": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "category": "Category",
+    "product": "Product",
+    "user": "User",
+    "role": "Role",
+    "charts": "Charts",
+    "line": "Line",
+    "bar": "Bar",
+    "pie": "Pie"
+  },
+  "admin": {
+    "title": "Background",
+    "header": "Welcome, ",
+    "btnText": "exit",
+    "logoutText": "Are you sure you want to log out?",
+    "okText": "ok",
+    "cancelText": "cancel",
+    "footer": "Welcome to Guigu Background~~"
+  },
+  "login": {
+    "title": "Guigu Background",
+    "logTitle": "User Login",
+    "username": "username",
+    "password": "password",
+    "btn": "Login"
+  }
+}

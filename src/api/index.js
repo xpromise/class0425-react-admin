@@ -1,16 +1,13 @@
+import axiosInstance from './request';
 import jsonp from 'jsonp';
-import axiosInstance from './ajax';
 
-// 定义登录请求方法
+// 定义请求登录方法
 export const reqLogin = (username, password) => axiosInstance.post('/login', {username, password});
-
-// 定义获取用户信息的方法
-export const reqGetUser = () => axiosInstance.get('/user');
 
 // 定义请求天气的方法
 export const reqWeather = (cityName) => {
   return new Promise((resolve, reject) => {
-    jsonp(
+    window.cancelJsonp = jsonp(
       `http://api.map.baidu.com/telematics/v3/weather?location=${cityName}&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`,
       {},
       function (err, data) {
@@ -31,51 +28,8 @@ export const reqWeather = (cityName) => {
   })
 };
 
-// 定义获取分类列表的方法
-export const reqGetCategory = (parentId) => axiosInstance.get('/manage/category/list', {
-  params: {
-    parentId
-  }
-});
-
-// 定义添加分类的方法
-export const reqAddCategory = (parentId, categoryName) => axiosInstance.post('/manage/category/add', {parentId, categoryName});
-
-// 定义修改分类名称的方法
-export const reqUpdateCategoryName = (categoryId, categoryName) => axiosInstance.post('/manage/category/update', {categoryId, categoryName});
-
-// 定义获取产品的方法
-export const reqGetProduct = (pageNum, pageSize) => axiosInstance.get('/manage/product/list', {
-  params: {
-    pageNum,
-    pageSize
-  }
-});
-
-export const reqAddProduct = ({ name, desc, price, detail, categoryId, pCategoryId }) => axiosInstance.post('/manage/product/add', { name, desc, price, detail, categoryId, pCategoryId });
-
-export const reqSearchProduct = (options) => axiosInstance.get('/manage/product/search', { params: options });
-
-export const reqUpdateProduct = ({ _id, name, desc, price, detail, categoryId, pCategoryId }) => axiosInstance.post('/manage/product/update', { _id, name, desc, price, detail, categoryId, pCategoryId });
-
-export const reqUpdateProductStatus = (productId, status) => axiosInstance.post('/manage/product/updateStatus', { productId, status });
-
-export const reqGetRole = () => axiosInstance.get('/manage/role/list');
-
-export const reqAddRole = (name) => axiosInstance.post('/manage/role/add', { name });
-
-export const reqUpdateRole = (_id, auth_name, menus) => axiosInstance.post('/manage/role/update', { _id, auth_name, menus });
-
-export const reqGetUserList = () => axiosInstance.get('/manage/user/list');
-
-export const reqAddUser = ({ username, password, phone, email, role_id }) => axiosInstance.post('/manage/user/add', { username, password, phone, email, role_id });
-
-
-
-
-
-
-
+// 定义请求添加分类方法
+export const reqAddCategory = (categoryName, parentId) => axiosInstance.post('/manage/category/add', {categoryName, parentId});
 
 
 
