@@ -6,4 +6,5 @@
 * 国际化 i18n
 * 全屏 screenfull
 * 进度条 nprocess
+* 换肤功能 react-color
 * ...
