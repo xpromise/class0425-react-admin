@@ -26,5 +26,10 @@
     "username": "用户名",
     "password": "密码",
     "btn": "登录"
+  },
+  "theme": {
+    "title": "主题颜色选择",
+    "okText": "确认",
+    "cancelText": "取消"
   }
 }

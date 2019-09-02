@@ -26,5 +26,10 @@
     "username": "username",
     "password": "password",
     "btn": "Login"
+  },
+  "theme": {
+    "title": "Theme Picker",
+    "okText": "ok",
+    "cancelText": "cancel"
   }
 }

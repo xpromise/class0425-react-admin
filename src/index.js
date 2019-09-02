@@ -8,7 +8,12 @@ import store from './redux/store';
 import App from './App';
 // 导入i18n
 import './i18n';
+import { initThemeStyle } from '@utils/theme';
+
 import './assets/css/reset.css';
+
+// 初始化theme
+initThemeStyle();
 
 ReactDOM.render(
   <Suspense fallback={<Spin size="large"/>}>

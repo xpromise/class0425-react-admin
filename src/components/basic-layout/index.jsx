@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next';
 import HeaderMain from './header-main';
 import FooterMain from './footer-main';
 import LeftNav from './left-nav';
+import ThemePicker from './theme-picker';
 
 import logo from '../../assets/images/logo.png';
 import './index.less';
@@ -41,6 +42,7 @@ class BaseLayout extends Component {
         <LeftNav />
       </Sider>
       <Layout>
+        <ThemePicker />
         <Header style={{ background: '#fff', padding: 0 }}>
           <HeaderMain />
         </Header>
