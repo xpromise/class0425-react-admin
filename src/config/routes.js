@@ -1,6 +1,9 @@
-import Home from '../components/home';
-import Category from '../containers/category';
-import User from '../containers/user';
+import Home from '@components/home';
+import Category from '@containers/category';
+import User from '@containers/user';
+import Product from '@containers/product';
+import SaveUpdateProduct from '@containers/product/save-update-product';
+import ProductDetail from '@containers/product/product-detail';
 
 const routes = [
   {
@@ -18,6 +21,21 @@ const routes = [
     component: User,
     exact: true
   },
+  {
+    path: "/product",
+    component: Product,
+    exact: true
+  },
+  {
+    path: "/product/saveupdate",
+    component: SaveUpdateProduct,
+    exact: true
+  },
+  {
+    path: "/product/detail",
+    component: ProductDetail,
+    exact: true
+  }
 ];
 
 export default routes;

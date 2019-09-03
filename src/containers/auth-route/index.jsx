@@ -3,11 +3,12 @@ import { Redirect, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 // 不需要登录路径
 import { UN_LOGIN_PATH } from '../../config';
+import { checkProductRoute } from '@utils/tools';
 
 
 function AuthRoute(props) {
 
-  const {
+  let {
     // 普通解构赋值
     hasLogin,
     menus,
@@ -24,6 +25,7 @@ function AuthRoute(props) {
     // 没有登录就去 /login 页面
     if (!hasLogin) return <Redirect to="/login"/>;
     // 看有没有权限访问 --> 权限管理功能
+    pathname = checkProductRoute(pathname);
     if (menus.indexOf(pathname) === -1) {
       return <Redirect to="/" />;
     }

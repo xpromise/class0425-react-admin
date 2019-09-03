@@ -19,5 +19,7 @@ module.exports = override(
     '@config': resolve(__dirname, 'src/config'),
     '@actions': resolve(__dirname, 'src/redux/action-creators'),
     '@api': resolve(__dirname, 'src/api'),
+    '@components': resolve(__dirname, 'src/components'),
+    '@containers': resolve(__dirname, 'src/containers'),
   })
 );

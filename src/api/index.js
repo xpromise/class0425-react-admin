@@ -12,3 +12,10 @@ export const reqUpdateCategoryName = (categoryId, categoryName) => axiosInstance
 
 export const reqDeleteCategory = (categoryId) => axiosInstance.post('/category/delete', {categoryId});
 
+export const reqGetProduct = (pageNum, pageSize) => axiosInstance.get('/product/list', {params: {pageNum, pageSize}});
+
+export const reqAddProduct = ({categoryId, name, price, desc, detail}) => axiosInstance.post('/product/add', {categoryId, name, price, desc, detail});
+
+export const reqUpdateProduct = ({productId, categoryId, name, price, desc, detail}) => axiosInstance.post('/product/update', {productId, categoryId, name, price, desc, detail});
+
+export const reqUpdateProductStatus = (productId, status) => axiosInstance.post('/product/update/status', {productId, status});

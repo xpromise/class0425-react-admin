@@ -59,9 +59,17 @@ const createMenu = (path, menuList) => {
     openKeys,
     menusList
   }
+}
+
+const checkProductRoute = (pathname) => {
+  if (pathname.startsWith('/product')) {
+    return '/product';
+  }
+  return pathname;
 };
 
 export {
   filterMenu,
-  createMenu
+  createMenu,
+  checkProductRoute
 }

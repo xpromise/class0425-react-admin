@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import menus from '@config/menus';
 
-import { filterMenu, createMenu } from '@utils/tools';
+import { filterMenu, createMenu, checkProductRoute } from '@utils/tools';
 
 @connect(
   (state) => ({menus: state.user.data.menus})
@@ -20,8 +20,11 @@ class LeftNav extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!prevState.menus.length) {
       // 根据用户权限menus列表 和 config/menus 来生成用户权限菜单。
+      let { pathname } = nextProps.location;
+      pathname = checkProductRoute(pathname);
+
       const filterMenusList = filterMenu(menus, nextProps.menus);
-      const { menusList, openKeys } = createMenu(nextProps.location.pathname, filterMenusList);
+      const { menusList, openKeys } = createMenu(pathname, filterMenusList);
 
       return {
         menus: menusList,
@@ -33,8 +36,9 @@ class LeftNav extends Component {
   }
 
   render() {
-    const { pathname } = this.props.location;
     const { menus, openKeys } = this.state;
+    let { pathname } = this.props.location;
+    pathname = checkProductRoute(pathname);
 
     return <Menu theme="dark" selectedKeys={[pathname]} defaultOpenKeys={openKeys} mode="inline">
       {

@@ -15,7 +15,6 @@ class Category extends Component {
   state = {
     isShowAddCategory: false,
     isShowUpdateCategoryName: false,
-    isShowDeleteCategory: false,
     category: {}
   };
 
@@ -118,11 +117,13 @@ class Category extends Component {
 
   componentDidMount() {
     // 请求分类数据
-    this.props.getCategoryAsync();
+    if (!this.props.categories.length) {
+      this.props.getCategoryAsync();
+    }
   }
 
   render() {
-    const { isShowAddCategory, isShowUpdateCategoryName, isShowDeleteCategory, category } = this.state;
+    const { isShowAddCategory, isShowUpdateCategoryName, category } = this.state;
     const { categories } = this.props;
 
     return <Card
