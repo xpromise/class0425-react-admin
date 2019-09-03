@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class Home extends Component {
+import './index.less';
 
-  render() {
-    return <div>
-      Home
-    </div>;
-  }
+export default function Home() {
+  return <div className="home">
+    欢迎访问硅谷后台管理系统~
+  </div>;
 }

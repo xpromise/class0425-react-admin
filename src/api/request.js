@@ -9,7 +9,7 @@ import { BASE_URL } from '../config';
 
 // 创建axios的实例
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL + '/api/',
   timeout: 10000,
   /*headers: {
     'X-Custom-Header': 'xxx'

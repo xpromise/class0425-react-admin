@@ -66,10 +66,8 @@ class ThemePicker extends Component {
           onChangeComplete={this.changeComplete}
         />
         <Divider />
-        <div >
-          <Button onClick={this.onClose}>{t('theme.cancelText')}</Button>
-          <Button onClick={this.submit}>{t('theme.okText')}</Button>
-        </div>
+        <Button onClick={this.onClose}>{t('theme.cancelText')}</Button>
+        <Button onClick={this.submit}>{t('theme.okText')}</Button>
       </Drawer>
     </Fragment>;
   }

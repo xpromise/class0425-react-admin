@@ -17,7 +17,7 @@ module.exports = override(
   addWebpackAlias({
     '@utils': resolve(__dirname, 'src/utils'),
     '@config': resolve(__dirname, 'src/config'),
-    '@redux': resolve(__dirname, 'src/redux'),
+    '@actions': resolve(__dirname, 'src/redux/action-creators'),
     '@api': resolve(__dirname, 'src/api'),
   })
 );

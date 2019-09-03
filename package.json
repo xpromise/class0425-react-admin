@@ -11,7 +11,6 @@
     "draftjs-to-html": "^0.8.4",
     "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",
-    "fullscreen": "^1.1.1",
     "html-to-draftjs": "^1.4.0",
     "i18next": "^17.0.13",
     "i18next-browser-languagedetector": "^3.0.3",

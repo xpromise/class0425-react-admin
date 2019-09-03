@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // 不需要登录路径
 import { UN_LOGIN_PATH } from '../../config';
 
+
 function AuthRoute(props) {
 
   const {
@@ -43,6 +44,4 @@ export default connect(
     hasLogin: state.user.hasLogin,
     menus: state.user.data.menus
   })
-)(
-  withRouter(AuthRoute)
-)
+)(withRouter(AuthRoute));

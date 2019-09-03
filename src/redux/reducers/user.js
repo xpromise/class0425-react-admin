@@ -1,11 +1,10 @@
-import { combineReducers } from 'redux';
 
 import {
   LOGIN_SUCCESS,
   REMOVE_USER,
-} from './action-types';
+} from '../action-types/user';
 
-import { getItem, setItem, removeItem } from '../utils/storage';
+import { getItem, setItem, removeItem } from '@utils/storage';
 
 const userData = getItem('user');
 const token = getItem('token');
@@ -42,6 +41,4 @@ function user(prevState = initUser, action) {
   }
 }
 
-export default combineReducers({
-  user
-})
+export default user;

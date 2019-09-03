@@ -3,7 +3,7 @@ import { Form, Input, Icon, Button } from 'antd';
 import { withTranslation } from 'react-i18next';
 
 import { connect } from 'react-redux';
-import { loginAsync } from '../../redux/action-creators';
+import { loginAsync } from '@actions/user';
 
 import logo from '../../assets/images/logo.png';
 

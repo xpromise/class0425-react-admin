@@ -12,10 +12,9 @@ function getThemeStyle(color) {
       color: ${color};
     }
     .ant-btn:hover, .ant-btn:focus{
-      color: ${color};
       border-color: ${color};
     }
-    .ant-btn-primary, .ant-btn-primary:hover, .ant-btn-primary:focus{
+    .ant-btn-primary{
       border-color: ${color};
       background-color: ${color};
     }

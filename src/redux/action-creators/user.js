@@ -6,11 +6,11 @@ import { message } from 'antd';
 import {
   LOGIN_SUCCESS,
   REMOVE_USER,
-} from './action-types';
+} from '../action-types/user';
 
 import {
   reqLogin,
-} from '../api';
+} from '@api';
 
 // 保存用户数据action
 const loginSuccess = (data) => ({type: LOGIN_SUCCESS, data});
@@ -30,3 +30,6 @@ export const loginAsync = (username, password) => {
       })
   }
 };
+
+
+

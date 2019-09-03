@@ -1569,11 +1569,6 @@ add-dom-event-listener@^1.1.0:
   dependencies:
     object-assign "4.x"
 
-add-event-listener@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npm.taobao.org/add-event-listener/download/add-event-listener-0.0.1.tgz#a76229ebc64c8aefae204a16273a2f255abea2d0"
-  integrity sha1-p2Ip68ZMiu+uIEoWJzovJVq+otA=
-
 address@1.1.0, address@^1.0.1:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/address/download/address-1.1.0.tgz#ef8e047847fcd2c5b6f50c16965f924fd99fe709"
@@ -4683,13 +4678,6 @@ fsevents@^1.2.7:
   dependencies:
     nan "^2.12.1"
     node-pre-gyp "^0.12.0"
-
-fullscreen@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npm.taobao.org/fullscreen/download/fullscreen-1.1.1.tgz#b9017c3bf9b23e07effd1bbce910cf5ec2459129"
-  integrity sha1-uQF8O/myPgfv/Ru86RDPXsJFkSk=
-  dependencies:
-    add-event-listener "0.0.1"
 
 function-bind@^1.0.2, function-bind@^1.1.1, function-bind@~1.1.1:
   version "1.1.1"

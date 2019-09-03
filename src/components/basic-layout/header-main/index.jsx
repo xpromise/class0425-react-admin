@@ -7,9 +7,8 @@ import screenfull from 'screenfull';
 
 import { connect } from 'react-redux';
 // webpack alias语法： 优点：可以简化路径  缺点：没有提示
-import { removeUser } from '@redux/action-creators';
+import { removeUser } from '@actions/user';
 import menuList from '@config/menus';
-import { reqWeather } from '@api';
 
 import './index.less';
 
@@ -25,8 +24,6 @@ class HeaderMain extends Component {
     this.state = {
       title: '',
       time: this.getTime(),
-      weather: '晴',
-      dayPictureUrl: 'http://api.map.baidu.com/images/weather/day/qing.png',
       lang: 'English',
       isScreenFull: false
     };
@@ -100,16 +97,7 @@ class HeaderMain extends Component {
       this.setState({
         time: this.getTime()
       })
-    }, 1000)
-    // 请求天气
-    reqWeather('深圳')
-      .then((res) => {
-        message.success('更新天气成功', 3);
-        this.setState(res);
-      })
-      .catch((err) => {
-        message.error(err, 3);
-      })
+    }, 1000);
 
     screenfull.on('change', () => {
       // 切换状态
@@ -122,8 +110,6 @@ class HeaderMain extends Component {
   componentWillUnmount() {
     // 清除定时器
     clearInterval(this.timer);
-    // 取消ajax请求
-    window.cancelJsonp();
   }
 
   changeLang = () => {
@@ -143,7 +129,7 @@ class HeaderMain extends Component {
   };
 
   render() {
-    const { title, time, weather, dayPictureUrl, lang, isScreenFull } = this.state;
+    const { title, time, lang, isScreenFull } = this.state;
     const { t } = this.props;
 
     return <div className="header-main">
@@ -155,11 +141,7 @@ class HeaderMain extends Component {
       </div>
       <div className="header-main-bottom">
         <h3>{t(title)}</h3>
-        <div>
-          <span>{time}</span>
-          <img src={dayPictureUrl} alt="weather"/>
-          <span>{weather}</span>
-        </div>
+        <span>{time}</span>
       </div>
     </div>;
   }
