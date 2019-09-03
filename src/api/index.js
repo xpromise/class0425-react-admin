@@ -19,3 +19,21 @@ export const reqAddProduct = ({categoryId, name, price, desc, detail}) => axiosI
 export const reqUpdateProduct = ({productId, categoryId, name, price, desc, detail}) => axiosInstance.post('/product/update', {productId, categoryId, name, price, desc, detail});
 
 export const reqUpdateProductStatus = (productId, status) => axiosInstance.post('/product/update/status', {productId, status});
+
+export const reqGetUser = () => axiosInstance.get('/user/get');
+
+export const reqDeleteUser = (username) => axiosInstance.post('/user/delete', {username});
+
+export const reqAddUser = ({username, password, phone, email, roleId}) => axiosInstance.post('/user/add', {username, password, phone, email, roleId});
+
+export const reqUpdateUser = (username, password) => axiosInstance.post('/user/update', {username, password});
+
+export const reqGetRole = () => axiosInstance.get('/role/get');
+
+
+
+
+
+
+
+
