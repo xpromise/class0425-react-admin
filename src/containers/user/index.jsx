@@ -203,7 +203,7 @@ export default class User extends Component {
           title="创建用户"
           visible={isShowAddUserModal}
           onOk={this.addUser}
-          onCancel={this.switchModal(false)}
+          onCancel={this.switchModal('isShowAddUserModal', false)}
           okText='确认'
           cancelText='取消'
         >

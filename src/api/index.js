@@ -30,6 +30,11 @@ export const reqUpdateUser = (username, password) => axiosInstance.post('/user/u
 
 export const reqGetRole = () => axiosInstance.get('/role/get');
 
+export const reqAddRole = (name) => axiosInstance.post('/role/add', {name});
+
+export const reqUpdateRole = (roleId, authName, menus) => axiosInstance.post('/role/update', {roleId, authName, menus});
+
+
 
 
 

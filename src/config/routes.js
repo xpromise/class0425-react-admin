@@ -4,6 +4,10 @@ import User from '@containers/user';
 import Product from '@containers/product';
 import SaveUpdateProduct from '@containers/product/save-update-product';
 import ProductDetail from '@containers/product/product-detail';
+import Role from '@containers/role';
+import Line from '@components/charts/line';
+import Bar from '@components/charts/bar';
+import Pie from '@components/charts/pie';
 
 const routes = [
   {
@@ -34,6 +38,26 @@ const routes = [
   {
     path: "/product/detail",
     component: ProductDetail,
+    exact: true
+  },
+  {
+    path: "/role",
+    component: Role,
+    exact: true
+  },
+  {
+    path: "/charts/line",
+    component: Line,
+    exact: true
+  },
+  {
+    path: "/charts/bar",
+    component: Bar,
+    exact: true
+  },
+  {
+    path: "/charts/pie",
+    component: Pie,
     exact: true
   }
 ];
